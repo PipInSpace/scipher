@@ -9,7 +9,7 @@ Python is inconsistent in this project (across operating systems? Probably due t
 
     TypeError: unsupported operand type(s) for >>: 'NoneType' and 'int'
 
-If you get this warning take a look at cfp_common.py:44.
+If you get this warning at decoding, take a look at cfp_common.py:44. The cause of this error may also silently occurr at encoding.
 
 # Overview
 
