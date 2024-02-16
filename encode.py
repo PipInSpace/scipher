@@ -180,8 +180,8 @@ def do_encode(state, website = None):
      ls_len = len(state.input_text) & 0x1f
 
      name_index = (mask << 13) | ((version ^ mask) << 5) | ls_len
-     f = open(cfp_common.CfpCommon.conf_names_filename(), 'r')
-     conf_name = cfp_common.CfpCommon.conf_name_from_index(f, name_index)
+     f = open(cfp_common.CfpCommon.conf_names_filename(), 'rb')
+     conf_name = cfp_common.CfpCommon.conf_name_from_index(f, name_index).decode()
      f.close()
      #print "3) %s" % time.time()
 
