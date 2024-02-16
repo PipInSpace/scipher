@@ -75,7 +75,7 @@ class CfpCommonV1(cfp_common.CfpCommon):
 
      def calc_list_bits(self, msg_len, body_prod):
           # we only care about lists that are actually used in the body
-          used_lists = {w[1]: w[0] for l,w in self.list_weights.iteritems()
+          used_lists = {w[1]: w[0] for l,w in self.list_weights.items()
                         if l in body_prod.rhs()}
 
           total_weight = sum(used_lists.values())
@@ -88,7 +88,7 @@ class CfpCommonV1(cfp_common.CfpCommon):
           fraction_in_lists = 0.85
 
           list_bits = {}
-          for l,w in used_lists.iteritems():
+          for l,w in used_lists.items():
                list_bits[l] = int(msg_len*fraction_in_lists*w/total_weight)
           return list_bits
 

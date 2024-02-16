@@ -21,7 +21,8 @@ DecodeState = collections.namedtuple('DecodeState',
 # http://interactivepython.org/courselib/static/pythonds/SortSearch/TheBinarySearch.html
 def binsearch_conf_names(conf_name):
      first = 0
-     last = 2097152
+     #last = 2097152
+     last = 3995928
 
      f = open(cfp_common.CfpCommon.conf_names_filename(), 'r')
      while first <= last:
@@ -95,7 +96,7 @@ def get_number(tree, grammar, state, in_list_arg = None):
          state.done.bits_left -= bits
 
     # set up list_bits if needed, before recursing:
-    subtrees = tree.subtrees().next()
+    subtrees = next(tree.subtrees())
     if len(state.list_bits) == 0 and nt_label == nltk.Nonterminal("CFP_BODY"):
          body_rhs = tuple(nltk.Nonterminal(t.label()) for t in subtrees)
          for p in prods:
@@ -144,18 +145,18 @@ def get_number(tree, grammar, state, in_list_arg = None):
                  #print ("(%s) Using %s bits %s (%s -> %s)" %
                  #       (prev_bits_left, bits, istring, nt_label, rhs))
                  return ((nt_label,), [istring]+num)
-    print "Couldn't find rhs for label %s, rhs %s" % (rhs, tree.label())
+    print("Couldn't find rhs for label %s, rhs %s" % (rhs, tree.label()))
 
 def bin_to_text(binstring, mask):
-    return ''.join(unichr(int(binstring[i:i+8], 2)^mask)
-                   for i in xrange(0, len(binstring), 8))
+    return ''.join(chr(int(binstring[i:i+8], 2)^mask)
+                   for i in range(0, len(binstring), 8))
 
 quote_re = re.compile("\"([^\"]*)\"")
 def tolower_inquotes(matchobj):
      return "\"%s\"" % matchobj.group(1).lower()
 
 def load_and_norm_grammar(grammar_file):
-     gs = open(grammar_file).read().decode("UTF-8")
+     gs = open(grammar_file).read()
      # when decoding, treat all terminals as lower case
      norm_gs = quote_re.sub(tolower_inquotes, gs)
      return nltk.CFG.fromstring(norm_gs)
@@ -164,7 +165,7 @@ def parse_text(text, grammar, state, length):
      parser = nltk.parse.LeftCornerChartParser(grammar)
      # add in a marker for single-line spaces, otherwise they will get split out
      if isinstance(text, str):
-          text = text.decode("utf-8")
+          text = text
      words = text.lower().replace("\n\n", "\nNEWLINE_SPACE\n").split()
      ready_words = [w.replace("NEWLINE_SPACE", " ") for w in words]
      parsed = parser.parse(ready_words)
@@ -173,14 +174,14 @@ def parse_text(text, grammar, state, length):
      for t in parsed:
           #print t
           if found:
-               print "Ambiguous grammar!"
+               print("Ambiguous grammar!")
                sys.exit(-1)
 
           found = True
           state.done.reset(length)
           (l, n) = get_number(t, grammar, state)
           if len(n) < 1:
-               print "Could not decode this text"
+               print("Could not decode this text")
                sys.exit(-1)
 
           # the total length should be "length".  If not, cut off
@@ -210,7 +211,7 @@ def decode_conf_name(header):
      # on the grammar yet (don't know what version was used to encode).
      # Look for the first location that has 3-5 capital letters that are
      # not 'CFP'.
-     groups = re.findall("\s[A-Z]{3,5}\s", header)
+     groups = re.findall("[A-Z]{3,5}", header)
      conf_name = ""
      for g in groups:
           c = g.lstrip().rstrip()
@@ -299,7 +300,7 @@ def main():
      state = DecodeState(common, conf_name, mask, header_grammar, body_grammar,
                          {}, space_before, space_after, Done())
 
-     print decode(header, body_text, state, ls_len),
+     print(decode(header, body_text, state, ls_len)),
 
 if __name__ == "__main__":
      main()

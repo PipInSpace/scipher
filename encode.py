@@ -7,7 +7,7 @@ import datetime
 import math
 import nltk
 import re
-import Queue
+from queue import LifoQueue
 import random
 import scipherd
 import sys
@@ -21,7 +21,7 @@ def a2b(a, mask):
      if ord_a >= 256:
           raise Exception("Unsupported character: %s" % a)
      ai = ord_a ^ mask
-     return ''.join('01'[(ai >> x) & 1] for x in xrange(7, -1, -1))
+     return ''.join('01'[(ai >> x) & 1] for x in range(7, -1, -1))
 ####
 
 class Bitstring:
@@ -108,7 +108,7 @@ def expand(grammar, nonterm, state, in_list = None):
 
 def expand_all(grammar, nonterm, state):
      result = ""
-     queue = Queue.LifoQueue()
+     queue = LifoQueue()
      queue.put_nowait(nonterm)
      # do this iteratively; recursively blows past python's recursive limit
      in_list = None
@@ -125,7 +125,7 @@ def expand_all(grammar, nonterm, state):
                in_list = None
           terms = expand(grammar, head, state, in_list)
           if len(terms) == 0:
-               if isinstance(head, basestring):
+               if isinstance(head, str):
                     result = " ".join([result, head])
                else:
                     result = " ".join([result, str(head)])
@@ -174,7 +174,7 @@ def do_encode(state, website = None):
      mask = random.randint(0,255)
      version = state.common.version()
      if version < 0 or version > 255:
-          print "Bad grammar version: %d" % version
+          print("Bad grammar version: %d" % version)
           sys.exit(-1)
 
      ls_len = len(state.input_text) & 0x1f
@@ -249,10 +249,10 @@ def main():
 
      input_text = ""
      for line in sys.stdin:
-          input_text += line.decode('utf-8')
+          input_text += line #.decode('utf-8')
 
      if len(input_text) > 2**20:
-          print "Input text must be smaller than 1MB."
+          print("Input text must be smaller than 1MB.")
           sys.exit(-1)
 
      common = cfp_common.CfpCommon.get_latest_common()
@@ -279,9 +279,9 @@ def main():
                          body_grammar, {}, space_before, space_after,
                          last_or_nots, LastTime())
      (header, body) = do_encode(state, args.website)
-     print header
-     print ""
-     print body
+     print(header)
+     print("")
+     print(body)
 
 
 if __name__ == "__main__":

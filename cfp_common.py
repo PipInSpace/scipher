@@ -41,7 +41,7 @@ class CfpCommon(object):
           if index > last_5byte_line:
                line_at_byte += 6*(index-last_5byte_line)
 
-          f.seek(line_at_byte, 0)
+          f.seek(line_at_byte+index, 0)
           return f.readline().rstrip()
 
      ## abstract interface below ##

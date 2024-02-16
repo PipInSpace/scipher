@@ -3,6 +3,7 @@
 # adapted from http://zguide.zeromq.org/py:asyncsrv
 
 import argparse
+import unicodedata
 import cfp_common
 import collections
 import decode
@@ -144,7 +145,7 @@ class Worker(threading.Thread):
                 worker.send_multipart([ident, str(True)])
             except Exception as e:
                 outf = io.open(task.outfile, 'w', encoding='utf-8')
-                outf.write("%s\n" % unicode(e))
+                outf.write("%s\n" % unicodedata(e))
                 outf.close()
                 worker.send_multipart([ident, str(False)])
 
@@ -178,7 +179,7 @@ def call_daemon(socket_name, encode, infile_arg, outfile_arg):
           outf = open(outfile, 'r')
           for line in outf:
                if ok:
-                   print line,
+                   print(line),
                else:
                    sys.stderr.write(line)
           outf.close()
