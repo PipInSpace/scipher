@@ -223,6 +223,11 @@ def decode_conf_name(header):
           raise Exception("Bad header format -- could not find conference name")
 
      index = binsearch_conf_names(conf_name)
+     # WARNING! Python is inconsistent in this project (across operating systems?).
+     # 
+     #    TypeError: unsupported operand type(s) for >>: 'NoneType' and 'int'
+     #
+     # If you get this warning take a look at cfp_common.py:44 :
      mask = index >> 13
      version = ((index >> 5) & 0xff) ^ mask
      ls_len = (index & 0x1f)

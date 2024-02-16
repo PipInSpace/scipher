@@ -2,7 +2,14 @@
 
 # This repository was forked from [scipher](https://github.com/strib/scipher)
 
-It provides compatibility with Python 3.x (And potentially some bug fixes)
+It provides compatibility with Python 3.x (And potentially some bug fixes).
+
+### WARNING:
+Python is inconsistent in this project (across operating systems? Probably due to different line endings on Windows/Linux).
+
+    TypeError: unsupported operand type(s) for >>: 'NoneType' and 'int'
+
+If you get this warning take a look at cfp_common.py:44.
 
 # Overview
 
@@ -57,8 +64,8 @@ This will print your encoded message on stdout (and print the random
 seed on stderr -- see below).  Let's say you saved the stdout in a
 file called 'msg.txt'.  Decode it simply with:
 
-    cat msg.txt | ./decode.py   (Linux)
-    type msg.txt | ./decode.py  (Windows)
+    cat msg.txt | ./decode.py          (Linux)
+    type msg.txt | python ./decode.py  (Windows)
 
 ## Daemon mode
 
