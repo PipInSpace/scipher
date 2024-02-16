@@ -1,5 +1,9 @@
 ------------------------------
 
+# This repository was forked from [scipher](https://github.com/strib/scipher)
+
+It provides compatibility with Python 3.x (And potentially some bug fixes)
+
 # Overview
 
 SCIpher is a program that can hide text messages within seemingly
@@ -53,7 +57,8 @@ This will print your encoded message on stdout (and print the random
 seed on stderr -- see below).  Let's say you saved the stdout in a
 file called 'msg.txt'.  Decode it simply with:
 
-    cat msg.txt | ./decode.py
+    cat msg.txt | ./decode.py   (Linux)
+    type msg.txt | ./decode.py  (Windows)
 
 ## Daemon mode
 
