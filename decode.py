@@ -24,10 +24,10 @@ def binsearch_conf_names(conf_name):
      #last = 2097152
      last = 3995928
 
-     f = open(cfp_common.CfpCommon.conf_names_filename(), 'r')
+     f = open(cfp_common.CfpCommon.conf_names_filename(), 'rb')
      while first <= last:
           midpoint = (first + last)//2
-          mid_name = cfp_common.CfpCommon.conf_name_from_index(f, midpoint)
+          mid_name = cfp_common.CfpCommon.conf_name_from_index(f, midpoint).decode()
           if mid_name == conf_name:
                return midpoint
 

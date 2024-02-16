@@ -41,15 +41,14 @@ class CfpCommon(object):
           if index > last_5byte_line:
                line_at_byte += 6*(index-last_5byte_line)
 
-          # WARNING! Python is inconsistent here (across minor versions or operating systems?).
-          # If you get this warning try changing the uncommented line:
-          # 
-          #    TypeError: unsupported operand type(s) for >>: 'NoneType' and 'int'
-          #
-          # Seems to work on Windows Python 3.10:
-          f.seek(line_at_byte+index, 0)
-          # Seems to work on Linux Python 3.11:
-          #f.seek(line_at_byte, 0)
+          f.seek(0, 0)
+          string = f.read(4)
+          if b'\r' in string:
+               # Windows line endings
+               f.seek(line_at_byte+index, 0)
+          else:
+               # Linux line ending
+               f.seek(line_at_byte, 0)
 
           return f.readline().rstrip()
 
